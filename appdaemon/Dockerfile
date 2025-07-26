@@ -23,9 +23,18 @@ RUN \
         py3-wheel=0.46.1-r0 \
         python3=3.12.11-r0 \
         yq-go=4.46.1-r0 \
-    \
-    && pip install -r /tmp/requirements.txt \
-    \
+        python3-dev \
+        build-base \
+        linux-headers \
+        cmake \
+        samurai
+
+RUN \
+    pip install scikit-build numpy --root-user-action=ignore \
+    && pip install opencv-contrib-python-headless --root-user-action=ignore --no-build-isolation
+
+RUN \
+    pip install -r /tmp/requirements.txt \
     && cd /usr/lib/python3.12/site-packages/ \
     && patch -p1 < /patches/force_recompile.patch \
     \
